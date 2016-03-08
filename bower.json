@@ -1,0 +1,23 @@
+{
+  "name": "mock-json",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Will"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "notie": "*",
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.1"
+  }
+}
