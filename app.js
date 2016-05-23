@@ -16,23 +16,23 @@ function low(val) {
  * Handle request params
  */
 var args = process.argv.splice(2);
-var HOST = (function getLocalIp(){
+var HOST = (function getLocalIp() {
     /**
      * get default IP
      */
     var ifaces = os.networkInterfaces();
     // console.log(ifaces);
-    var _local = ifaces['本地连接'] || ifaces['无线网络连接'] || ifaces['en0'] || ifaces['en6'] || [{address:"127.0.0.1"}];
-    return _local[_local.length-1]['address'];
+    var _local = ifaces['本地连接'] || ifaces['无线网络连接'] || ifaces['en0'] || ifaces['en1'] || ifaces['en2'] || ifaces['en3'] || ifaces['en6'] || [{ address: "127.0.0.1" }];
+    return _local[_local.length - 1]['address'];
 })();
 var PORT = '3000';
-for (var i=0;i<args.length;i++) {
-  var _arg = args[i];
-  if (_arg == '-a') {
-    HOST = args[i+1];
-  } else if (_arg == '-p') {
-    PORT = args[i+1];
-  }
+for (var i = 0; i < args.length; i++) {
+    var _arg = args[i];
+    if (_arg == '-a') {
+        HOST = args[i + 1];
+    } else if (_arg == '-p') {
+        PORT = args[i + 1];
+    }
 }
 
 var mimetype = {
@@ -152,6 +152,9 @@ var all_mock = function(req, res) {
             result.push(db('data').value()[0]);
         }
         res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+            'Access-Control-Allow-Headers': "accept, Content-Type",
             'Content-Type': 'application/json;charset=utf-8'
         });
         res.write(JSON.stringify(result));
@@ -176,6 +179,9 @@ var add_mock = function(req, res) {
         try {
             if (id) {
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write('{"errCode":"1","errMsg":"You have submited , please check."}');
@@ -184,6 +190,9 @@ var add_mock = function(req, res) {
                 params = JSON.parse(JSON.stringify(params));
                 var b = db('data').push(params);
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write('{"errCode":"000","errMsg":"Add SUCCESS !"}');
@@ -191,6 +200,9 @@ var add_mock = function(req, res) {
             }
         } catch (err) {
             res.writeHead(200, {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                'Access-Control-Allow-Headers': "accept, Content-Type",
                 'Content-Type': 'application/json;charset=utf-8'
             });
             res.write('{"errCode":"2","errMsg":"Server is busy, please try submit again, thanks..."}');
@@ -215,8 +227,11 @@ var delete_mock = function(req, res) {
         });
         try {
             if (id) {
-                db('data').remove({url:_url});
+                db('data').remove({ url: _url });
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write('{"errCode":"1","errMsg":"Delete SUCCESS"}');
@@ -224,6 +239,9 @@ var delete_mock = function(req, res) {
             } else {
                 params = JSON.parse(JSON.stringify(params));
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write('{"errCode":"000","errMsg":"Delete content not exist"}');
@@ -232,6 +250,9 @@ var delete_mock = function(req, res) {
         } catch (err) {
             console.log(err);
             res.writeHead(200, {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                'Access-Control-Allow-Headers': "accept, Content-Type",
                 'Content-Type': 'application/json;charset=utf-8'
             });
             res.write('{"errCode":"2","errMsg":"Server is busy, please try submit again, thanks..."}');
@@ -269,6 +290,9 @@ var update_mock = function(req, res) {
                     })
                     .value();
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write('{"errCode":"1","errMsg":"Update SUCCESS !"}');
@@ -276,6 +300,9 @@ var update_mock = function(req, res) {
             } else {
                 var b = db('data').push(params);
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write('{"errCode":"000","errMsg":"Add SUCCESS !"}');
@@ -284,6 +311,9 @@ var update_mock = function(req, res) {
         } catch (err) {
             console.log(err);
             res.writeHead(200, {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                'Access-Control-Allow-Headers': "accept, Content-Type",
                 'Content-Type': 'application/json;charset=utf-8'
             });
             res.write('{"errCode":"2","errMsg":"Server is busy, please try submit again, thanks..."}');
@@ -302,13 +332,20 @@ var mock_api = function(req, res, pathName) {
             try {
                 var jsonData = db('data').value()[0]['json'];
                 jsonData = JSON.parse(JSON.stringify(jsonData));
+                console.log("start return response");
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write(jsonData);
                 res.end();
             } catch (err) {
                 res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                    'Access-Control-Allow-Headers': "accept, Content-Type",
                     'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.write('{"errCode":"222","errMsg":"Server is busy, please try submit again, thanks..."}');
@@ -317,6 +354,9 @@ var mock_api = function(req, res, pathName) {
         } else {
             console.log(jsonPath + ' not exist');
             res.writeHead(200, {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                'Access-Control-Allow-Headers': "accept, Content-Type",
                 'Content-Type': 'application/json;charset=utf-8'
             });
             res.write('{"errCode":"111","errMsg":"Request Path not exist"}');
@@ -362,6 +402,7 @@ http.createServer(function(req, res) {
     }
 
     if (pathname.indexOf("/mock") == 0) {
+        console.log("start mock");
         return mock_api(req, res, pathname);
     }
 
@@ -374,6 +415,9 @@ http.createServer(function(req, res) {
         } else {
             var file = fs.createReadStream(realPath);
             res.writeHead(200, {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': "POST, GET, OPTIONS",
+                'Access-Control-Allow-Headers': "accept, Content-Type",
                 'Content-Type': mimetype[realPath.split('.').pop()] || 'text/plain'
             });
             file.on('data', res.write.bind(res));
