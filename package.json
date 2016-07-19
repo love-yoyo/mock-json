@@ -9,6 +9,7 @@
   "author": "Will",
   "license": "ISC",
   "dependencies": {
+    "dev-ip": "^1.0.1",
     "lowdb": "^0.12.5"
   }
 }

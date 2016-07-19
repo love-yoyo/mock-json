@@ -7,6 +7,8 @@ var lowdb = require('lowdb');
 var storage = require('lowdb/file-sync');
 var path = require('path');
 var os = require('os');
+var devip = require('dev-ip');
+
 
 function low(val) {
     return lowdb(val, { storage });
@@ -16,15 +18,17 @@ function low(val) {
  * Handle request params
  */
 var args = process.argv.splice(2);
-var HOST = (function getLocalIp() {
-    /**
-     * get default IP
-     */
-    var ifaces = os.networkInterfaces();
-    // console.log(ifaces);
-    var _local = ifaces['本地连接'] || ifaces['无线网络连接'] || ifaces['en0'] || ifaces['en1'] || ifaces['en2'] || ifaces['en3'] || ifaces['en6'] || [{ address: "127.0.0.1" }];
-    return _local[_local.length - 1]['address'];
-})();
+// var HOST = (function getLocalIp() {
+//     /**
+//      * get default IP
+//      */
+//     var ifaces = os.networkInterfaces();
+//     // console.log(ifaces);
+//     var _local = ifaces['本地连接'] || ifaces['无线网络连接'] || ifaces['en0'] || ifaces['en1'] || ifaces['en2'] || ifaces['en3'] || ifaces['en6'] || [{ address: "127.0.0.1" }];
+//     return _local[_local.length - 1]['address'];
+// })();
+
+var HOST = (devip() || ['127.0.0.1'])[0];
 var PORT = '3000';
 for (var i = 0; i < args.length; i++) {
     var _arg = args[i];
