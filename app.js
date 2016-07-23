@@ -26,19 +26,12 @@ app.use(bodyParser());
 
 app.use(static(path.join(__dirname, './client')));
 app.use(static(path.join(__dirname, './bower_components')));
-app.use(route.all('/mock/*', mock));
 
-function* mock() {
-    var req = this.request;
-    console.log(this.query);
-    console.log(this.request.body);
-    console.log('[start mock]: ' + this.url);
-
-    var res = this.response;
-    this.status = 404;
-    this.body = { test: 123 };
-
-}
+app.use(route.all('/api/query/:method', require('./server/operate/queryMock')));
+app.use(route.all('/api/add', require('./server/operate/addMock')));
+app.use(route.all('/api/delete', require('./server/operate/deleteMock')));
+app.use(route.all('/api/update', require('./server/operate/updateMock')));
+app.use(route.all('/mock/*', require('./server/mock')));
 
 app.listen(PORT);
 console.log('server at http://' + HOST + ':' + PORT);

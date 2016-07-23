@@ -23,5 +23,14 @@
                     });
                 $urlRouterProvider.otherwise('/', '/table/smart');
             }
-        ]);
+        ])
+        .directive('includeWithScope', [function includeWithScope() {
+            return {
+                restrict: 'AE',
+                templateUrl: function(ele, attrs) {
+                    return attrs.includeWithScope;
+                }
+            };
+        }]);
+
 })();

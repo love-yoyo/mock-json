@@ -1,36 +1,59 @@
 <div class="add-row-editable-table">
-    <button class="btn btn-primary" ng-click="addUser()">Add row</button>
+    <button class="btn btn-primary" ng-click="addMock()">Add row</button>
 </div>
 <table class="table table-bordered table-hover table-condensed">
     <tr>
         <td></td>
-        <td>Name</td>
-        <td>Status</td>
-        <td>Group</td>
-        <td>Actions</td>
+        <td>Api</td>
+        <td>Json</td>
+        <td>Response Config</td>
+        <td>Creator</td>
+        <td>Create Time</td>
+        <td>Last Modify</td>
+        <td>Action</td>
     </tr>
-    <tr ng-repeat="user in users" class="editable-row">
+    <tr ng-repeat="mock in mocks" class="editable-row">
         <td>
             {{$index}}
         </td>
         <td>
-            <span editable-text="user.name" e-name="name" e-form="rowform" e-required>
-          {{ user.name || 'empty' }}
-        </span>
-        </td>
-        <td class="select-td">
-            <span editable-select="user.status" e-name="status" e-form="rowform" e-selectpicker e-ng-options="s.value as s.text for s in statuses">
-          {{ showStatus(user) }}
-        </span>
-        </td>
-        <td class="select-td">
-            <span editable-select="user.group" e-name="group" onshow="loadGroups()" e-form="rowform" e-selectpicker e-ng-options="g.id as g.text for g in groups">
-          {{ showGroup(user) }}
-        </span>
+            <span editable-text="mock.api" edit-disabled="{{!!mock.api}}" e-name="api" e-form="rowform" e-required>
+              {{ mock.api || '' }}
+            </span>
         </td>
         <td>
-            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
-                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
+            <span editable-textarea="mock.json" e-name="json" e-form="rowform" e-required>
+              {{ mock.json || '' }}
+            </span>
+        </td>
+        <td>
+            <span editable-textarea="mock.respCfg" e-name="respCfg" e-form="rowform" e-required>
+              {{ mock.respCfg || '' }}
+            </span>
+        </td>
+        <td>
+            <span editable-text="mock.creator" e-name="creator" e-form="rowform" e-required>
+              {{ mock.creator || '' }}
+            </span>
+        </td>
+        <td>
+            <span e-name="createTime" e-form="rowform" e-required>
+              {{ mock.createTime || '' }}
+            </span>
+        </td>
+        <td>
+            <span e-name="lastModifyTime" e-form="rowform" e-required>
+              {{ mock.lastModifyTime || '' }}
+            </span>
+        </td>
+        <!-- <td class="select-td">
+            <span editable-select="user.status" e-name="status" e-form="rowform" e-selectpicker e-ng-options="s.value as s.text for s in statuses">
+              {{ showStatus(user) }}
+            </span>
+        </td> -->
+        <td>
+            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == mock">
+                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs" ng-click='submit($index)'>
                     Save
                 </button>
                 <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
@@ -39,7 +62,7 @@
             </form>
             <div class="buttons" ng-show="!rowform.$visible">
                 <button class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">Edit</button>
-                <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeUser($index)">Delete</button>
+                <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeMock($index)">Delete</button>
             </div>
         </td>
     </tr>
