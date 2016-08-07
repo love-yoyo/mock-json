@@ -6,16 +6,16 @@ var bodyParser = require('koa-bodyparser');
 
 var path = require('path');
 var devip = require('dev-ip');
+var portscanner = require('portscanner');
 
 var args = process.argv.splice(2);
 
 var HOST = (devip() || ['127.0.0.1'])[0];
-var PORT = '8090';
-for (var i = 0; i < args.length; i++) {
-    var _arg = args[i];
-    if (_arg == '-p') {
-        PORT = args[i + 1];
-    }
+
+var getPort = function(cb) {
+    portscanner.findAPortNotInUse(8090, 8091, '127.0.0.1', function(error, port) {
+        cb(port);
+    })
 }
 
 var app = koa();
@@ -33,5 +33,9 @@ app.use(route.all('/api/delete', require('./server/operate/deleteMock')));
 app.use(route.all('/api/update', require('./server/operate/updateMock')));
 app.use(route.all('/mock/*', require('./server/mock')));
 
-app.listen(PORT);
-console.log('server at http://' + HOST + ':' + PORT);
+getPort(function(port){
+    app.listen(port);
+    console.log('server at http://' + HOST + ':' + port);
+});
+
+

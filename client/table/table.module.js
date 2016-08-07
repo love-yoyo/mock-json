@@ -18,10 +18,9 @@
                         title: 'Table'
                     }).state('table.smart', {
                         url: '/smart',
-                        templateUrl: 'table/table.html',
+                        templateUrl: 'table/table.tpl.html',
                         title: 'Smart Tables'
                     });
-                $urlRouterProvider.otherwise('/', '/table/smart');
             }
         ])
         .directive('includeWithScope', [function includeWithScope() {
